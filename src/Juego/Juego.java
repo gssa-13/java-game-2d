@@ -16,6 +16,8 @@ public class Juego extends Canvas implements Runnable {
     private static volatile boolean enFuncionamiento = false;
 
     private static final String NOMBRE = "Juego";
+    private static int aps = 0;
+    private static int fps = 0;
 
     private static JFrame ventana;
     private static Thread thread;
@@ -55,9 +57,49 @@ public class Juego extends Canvas implements Runnable {
         }
     }
 
-    public void run() {
-        while (enFuncionamiento) {
+    /**
+     * metodo encargado de actualizar las variables del juego
+     * posicion del jugador, equipo, vida entre otros
+     */
+    private void actualizar() {
+        aps++;
 
+    }
+
+    private void mostrar() {
+        fps++;
+    }
+
+    public void run() {
+        System.nanoTime(); //mide el tiempo segun los ciclos de reloj del procesador
+        final int NANO_SEGUNDO_POR_SEGUNDO = 1000000000; //equivalencia de nano segundo en 1s
+        final byte ACTUALIZACIONES_POR_SEGUNDO_OBJETIVO = 60;
+        final double NANO_SEGUNDO_POR_ACTUALIZACION = NANO_SEGUNDO_POR_SEGUNDO / ACTUALIZACIONES_POR_SEGUNDO_OBJETIVO;
+        long referenciaActualizacion = System.nanoTime(); // se le atribuye una cantidad de tiempo en nanosegundos
+        long referenciaContadorFramePerSecond =  System.nanoTime();
+        double tiempoTranscurrido;
+        double delta = 0; //cantidad de tiempo transcurrido hasta que hay una actualizacion
+
+        while (enFuncionamiento) {
+            final long inicioBucle = System.nanoTime(); // inicia el cronometro
+            tiempoTranscurrido = inicioBucle - referenciaActualizacion; // medimos tiempo transcurrido
+            referenciaActualizacion = inicioBucle; // se setea para comparar desde que inicio el bucle
+            delta += tiempoTranscurrido / NANO_SEGUNDO_POR_ACTUALIZACION;
+
+            while (delta >= 1) {
+                actualizar();
+                delta--;
+            }
+
+            mostrar();
+
+            if (System.nanoTime() - referenciaContadorFramePerSecond > NANO_SEGUNDO_POR_SEGUNDO) {
+                ventana.setTitle(NOMBRE + " || APS: " + aps + " || FPS: " + fps);
+                // reiniciamos el contador
+                aps = 0;
+                fps = 0;
+                referenciaContadorFramePerSecond = System.nanoTime();
+            }
         }
     }
 }
