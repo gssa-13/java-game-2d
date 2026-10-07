@@ -6,7 +6,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 
-public class Juego extends Canvas {
+public class Juego extends Canvas implements Runnable{
 
     private static final long serialVersionUID = 1L;
 
@@ -15,6 +15,7 @@ public class Juego extends Canvas {
     private static final String NOMBRE = "Juego";
 
     private static JFrame ventana;
+    private static Thread thread;
 
     private Juego() {
         setPreferredSize(new Dimension(ANCHO, ALTO)); // define la dimension de la ventana
@@ -31,6 +32,20 @@ public class Juego extends Canvas {
 
     public static void main(String[] args) {
         Juego juego = new Juego();
+        juego.iniciar();
     }
 
+    private void iniciar() {
+        // se crea el hilo encargado de generar los graficos
+        thread = new Thread(this, "Graficos");
+        thread.start();
+    }
+
+    private void detener() {
+
+    }
+
+    public void run() {
+        System.out.println("Juego thread started");
+    }
 }
