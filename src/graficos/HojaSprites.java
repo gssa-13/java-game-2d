@@ -23,4 +23,12 @@ public class HojaSprites {
             e.printStackTrace();
         }
     }
+
+    public int obtenerAncho() {
+        return this.ancho;
+    }
+
+    public int obtenerAlto() {
+        return this.alto;
+    }
 }
