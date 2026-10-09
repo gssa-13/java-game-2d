@@ -1,5 +1,7 @@
 package juego;
 
+import control.Teclado;
+
 import javax.swing.JFrame;
 
 import java.awt.Canvas;
@@ -21,9 +23,12 @@ public class Juego extends Canvas implements Runnable {
 
     private static JFrame ventana;
     private static Thread thread;
+    private static Teclado teclado;
 
     private Juego() {
         setPreferredSize(new Dimension(ANCHO, ALTO)); // define la dimension de la ventana
+        teclado = new Teclado();
+        addKeyListener(teclado);// se le indica a java que detecte a traves de la clase todas las teclas que se pulsen
 
         ventana = new JFrame(NOMBRE); // define el titulo o nombre de la ventana
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // agrega el evento cerrar ventana y detiene el proceso
@@ -62,8 +67,22 @@ public class Juego extends Canvas implements Runnable {
      * posicion del jugador, equipo, vida entre otros
      */
     private void actualizar() {
-        aps++;
+        teclado.actualizar();
 
+        if (teclado.arriba) {
+            System.out.println("arriba");
+        }
+        if (teclado.abajo) {
+            System.out.println("abajo");
+        }
+        if (teclado.izquierda) {
+            System.out.println("izquierda");
+        }
+        if (teclado.derecha) {
+            System.out.println("derecha");
+        }
+
+        aps++;
     }
 
     private void mostrar() {
@@ -79,6 +98,8 @@ public class Juego extends Canvas implements Runnable {
         long referenciaContadorFramePerSecond =  System.nanoTime();
         double tiempoTranscurrido;
         double delta = 0; //cantidad de tiempo transcurrido hasta que hay una actualizacion
+
+        requestFocus();
 
         while (enFuncionamiento) {
             final long inicioBucle = System.nanoTime(); // inicia el cronometro
