@@ -3,7 +3,7 @@ package juego;
 import control.Teclado;
 import graficos.Pantalla;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,8 +14,8 @@ public class Juego extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int ANCHO = 800;
-    private static final int ALTO = 600;
+    private static final int ANCHO = 1200;
+    private static final int ALTO = 900;
 
     private static volatile boolean enFuncionamiento = false;
 
@@ -35,6 +35,8 @@ public class Juego extends Canvas implements Runnable {
 
     private static int[] pixeles = ((DataBufferInt) imagen.getRaster().getDataBuffer()).getData();
 
+    private static final ImageIcon icono = new ImageIcon(Juego.class.getResource("/icono/icon.png"));
+
     private Juego() {
         setPreferredSize(new Dimension(ANCHO, ALTO)); // define la dimension de la ventana
 
@@ -46,6 +48,7 @@ public class Juego extends Canvas implements Runnable {
         ventana = new JFrame(NOMBRE); // define el titulo o nombre de la ventana
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // agrega el evento cerrar ventana y detiene el proceso
         ventana.setResizable(false); // evita que el usuario modifique las dimensiones de la ventana
+        ventana.setIconImage(icono.getImage());
         ventana.setLayout(new BorderLayout()); // agrega un disenno u organizacion interna
         ventana.add(this, BorderLayout.CENTER); //
         ventana.pack(); //bloquea la venta a las medidas establecidas
